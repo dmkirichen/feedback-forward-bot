@@ -6,7 +6,7 @@
 - Scarlet, яка попросила залишитись анонімною
 Дякуємо Сергію Дамбесту за допомогу.
 """
-
+import os
 import json
 import requests
 import time
@@ -18,18 +18,24 @@ with open("./credentials.json", "r") as f:
 
 TOKEN = credentials_data["TOKEN"]
 ADMIN_CHAT_ID = credentials_data["ADMIN_CHAT_ID"]
+WEBHOOK_URL = credentials_data["WEBHOOK_URL"]
+PORT = os.getenv("PORT", default="5000")
+# URL = "https://api.telegram.org:{}/bot{}/".format(PORT, TOKEN)
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 db = ReplyDatabase("replies.csv", max_entries=10)
 
 
 def get_url(url):
-    response = requests.get(url)
+    url_str = f"{url}"
+    print(url_str)
+    response = requests.get(url_str)
+
     content = response.content.decode("utf8")
     return content
 
 
 def get_json_from_url(url):
-    content = get_url(url)
+    content = get_url(f"{url}")
     js = json.loads(content)
     return js
 
@@ -202,6 +208,7 @@ def main():
     last_update_id = None
     while True:
         updates = get_updates(last_update_id)
+        print(updates)
         if len(updates["result"]) > 0:
             print(f"\n{updates}")
             last_update_id = get_last_update_id(updates) + 1
@@ -211,5 +218,6 @@ def main():
 
 if __name__ == '__main__':
     print("Bot has started.")
+    # get_url(URL + f"setWebhook?url={WEBHOOK_URL}{TOKEN}")
     db.show_contents()
     main()
