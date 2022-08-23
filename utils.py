@@ -1,3 +1,5 @@
+import os
+import os.path
 import json
 import requests
 
@@ -15,3 +17,8 @@ def get_json_from_url(url):
     content = get_url(f"{url}")
     js = json.loads(content)
     return js
+
+
+def delete_if_exists(filename):
+    if os.path.exists(filename):
+        os.remove(filename)

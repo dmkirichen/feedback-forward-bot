@@ -3,4 +3,5 @@ database/replies.csv.lock
 run_test.sh
 .idea/
 __pycache__/
+database/__pycache__/
 

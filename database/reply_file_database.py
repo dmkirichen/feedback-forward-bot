@@ -43,6 +43,9 @@ class ReplyFileDatabase(ReplyDatabase):
                             return row[1]
         return None
 
+    def del_entry(self, key: str) -> bool:
+        return False
+
     def show_contents(self) -> None:
         with self.__lock:
             with open(self.__filename, "r+", newline='', encoding='utf-8') as f:
@@ -52,3 +55,6 @@ class ReplyFileDatabase(ReplyDatabase):
                         print(f"{row[0]}, {row[1]}")
                     else:
                         print(row)
+
+    def close(self) -> None:
+        pass
